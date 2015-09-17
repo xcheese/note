@@ -124,7 +124,7 @@ var LikeButton = React.createClass({
 ```
 
 
-# findDOMNode
+# findDOMNode，this.refs
 
 ```
 var Component = React.createClass({
@@ -222,6 +222,74 @@ React.render(
 );
 
 ```
+
+# 生命周期，实例化
+* prop -> state -> willMount -> render -> didMount
+
+```
+var Test = React.createClass({
+	getDefaultProps:function(){
+		console.log(1)
+		return {p:1}
+	},
+	getInitialState:function(){
+		console.log(2)
+		return {s:2}
+	},
+	componentWillMount:function(){
+		console.log(3)
+	},
+	componentDidMount:function(){
+		console.log(5)
+	},
+	render:function(){
+		console.log(4)
+		return (
+			<p>test声明周期</p>
+		)
+	}
+})
+
+React.render(
+  <Test />,
+  document.getElementById('example')
+);
+```
+
+# 生命周期，存在期
+
+1. componentWillReceiveProps  //更新prop、state时机
+2. -> shouldComponentUpdate	   //return false;可以跳过render，加快速度，如果你确认prop和state都没有变化的话
+3. -> componentWillUpdate	   
+4. -> render
+5. -> componentDidUpdate
+
+# 生命周期，销毁
+
+* componentWillUnmount	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
