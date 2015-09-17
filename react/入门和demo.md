@@ -142,9 +142,86 @@ var Component = React.createClass({
 	}
 })
 ```
+# componentWillMount，componentDidMount
 
+```
+var Hello = React.createClass({
+	getInitialState:function(){
+		return {
+			opacity:1.0
+		}
+	},
+	componentWillMount:function(){
+		this.timer = setInterval(function(){
+			var opacity = this.state.opacity;
+			opacity -=0.05;
+			if(opacity < 0.1){
+		 		opacity = 1.0;
+			};
+			this.setState({
+				opacity:opacity
+			})
+		}.bind(this),100)
+		
+		console.log(1)
 
+	},
+	componentDidMount:function(){
+		console.log(2)
+	},
+	render:function(){
 
+		return(
+			<div style={{opacity: this.state.opacity}}>
+				Hello {this.props.name}
+				<p>{this.timer}</p>
+			</div>
+		)
+
+	}
+```
+
+# mixins
+
+```
+var SetIntervalMixin = {
+  componentWillMount: function() {
+    this.intervals = [];
+  },
+  setInterval: function() {
+    this.intervals.push(setInterval.apply(null, arguments));
+  },
+  componentWillUnmount: function() {
+    this.intervals.map(clearInterval);
+  }
+};
+
+var TickTock = React.createClass({
+  mixins: [SetIntervalMixin], // 引用 mixin
+  getInitialState: function() {
+    return {seconds: 0};
+  },
+  componentDidMount: function() {
+    this.setInterval(this.tick, 1000); // 调用 mixin 的方法
+  },
+  tick: function() {
+    this.setState({seconds: this.state.seconds + 1});
+  },
+  render: function() {
+    return (
+      <p>
+        React has been running for {this.state.seconds} seconds.
+      </p>
+    );
+  }
+});
+
+React.render(
+  <TickTock />,
+  document.getElementById('example')
+);
+
+```
 
 
 
